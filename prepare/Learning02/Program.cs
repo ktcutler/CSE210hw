@@ -22,8 +22,8 @@ class Program
 
         Resume resume1 = new Resume();
         resume1._name = "Kole Cutler";
-
-        resume1.();
+        
+        resume1.DisplayResumeDetails();
 
         
 
