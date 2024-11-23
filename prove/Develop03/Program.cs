@@ -36,6 +36,11 @@ class Program
         {
             Console.Clear();
             Console.WriteLine(scripture.Display());
+            Console.WriteLine("Congrats! You finished the program!"); 
+
+            Console.WriteLine("What did you like about the scripture?"); // STRETCH
+            string userComment = Console.ReadLine();
+            Console.WriteLine("Great points! Thank you for sharing them.");
         }
     }
 }
