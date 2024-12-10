@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-
 public class EternalGoal : Goal
 {
     public EternalGoal(string goalName, string goalDescription, int userPoints)
-        : base(goalName, goalDescription, userPoints)
-    {
-    }
+        : base(goalName, goalDescription, userPoints) { }
 
     public static EternalGoal CreateGoal(List<Goal> goals)
     {

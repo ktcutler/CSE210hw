@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 public class SimpleGoal : Goal
 {
     private string _checkBox;
@@ -11,15 +8,8 @@ public class SimpleGoal : Goal
         _checkBox = " ";
     }
 
-    public string GetCheckBox()
-    {
-        return _checkBox;
-    }
-
-    public void MarkComplete()
-    {
-        _checkBox = "X";
-    }
+    public string GetCheckBox() { return _checkBox; }
+    public void MarkComplete() { _checkBox = "X"; }
 
     public static SimpleGoal CreateGoal(List<Goal> goals)
     {
