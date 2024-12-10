@@ -11,9 +11,6 @@ class Program
         // A placeholder for where you'll store goals
         var goals = new List<Goal>();
 
-        // Optionally, load goals from the file
-        // goals = LoadGoals("goals.txt");
-
         while (true)
         {
             // Display total points above the menu
@@ -32,31 +29,26 @@ class Program
             switch (choice)
             {
                 case "1":
-                    // Submenu for creating a new goal
                     CreateNewGoal(goals);
                     break;
 
                 case "2":
-                    // List all the goals
                     ListGoals(goals);
                     break;
 
                 case "3":
-                    // Save the goals
-                    SaveGoals(goals, "goals.txt");
+                    SaveGoals(goals);
                     break;
 
                 case "4":
-                    // Load the goals
-                    goals = LoadGoals("goals.txt");
+                    goals = LoadGoals();
                     break;
 
                 case "5":
-                    // Record an event (for simplicity, we won't handle event recording in this example)
+                    RecordEvent(goals);
                     break;
 
                 case "6":
-                    // Exit the program
                     return;
 
                 default:
@@ -93,8 +85,8 @@ class Program
                 break;
         }
 
-        Console.ReadKey();  
-        Console.Clear();  
+        Console.ReadKey();
+        Console.Clear();
     }
 
     static void CreateSimpleGoal(List<Goal> goals)
@@ -121,8 +113,11 @@ class Program
         Console.WriteLine("Checklist Goal created. Press Enter to Return to the Main Menu.");
     }
 
-    static void SaveGoals(List<Goal> goals, string filename)
+    static void SaveGoals(List<Goal> goals)
     {
+        Console.Write("Enter the filename to save your goals (e.g., goals.txt): ");
+        string filename = Console.ReadLine();
+
         using (StreamWriter writer = new StreamWriter(filename))
         {
             foreach (Goal goal in goals)
@@ -131,12 +126,15 @@ class Program
             }
         }
 
-        Console.WriteLine("Goals have been saved.");
+        Console.WriteLine($"Goals have been saved to {filename}.");
     }
 
-    static List<Goal> LoadGoals(string filename)
+    static List<Goal> LoadGoals()
     {
         List<Goal> goals = new List<Goal>();
+
+        Console.Write("Enter the filename to load goals from: ");
+        string filename = Console.ReadLine();
 
         if (File.Exists(filename))
         {
@@ -180,47 +178,84 @@ class Program
 
         return goals;
     }
-static void ListGoals(List<Goal> goals)
-{
-    Console.Clear(); // Ensure the screen is cleared before listing the goals
 
-    if (goals.Count == 0)
+    static void ListGoals(List<Goal> goals)
     {
-        Console.WriteLine("No goals found.");
+        Console.Clear();
+        if (goals.Count == 0)
+        {
+            Console.WriteLine("No goals found.");
+        }
+        else
+        {
+            int goalNumber = 1;
+            foreach (var goal in goals)
+            {
+                string checkbox = goal.IsCompleted() ? "[X]" : "[ ]";
+                if (goal is CheckList checklistGoal)
+                {
+                    Console.WriteLine($"{goalNumber}. {checkbox} {goal.GetGoalName()} ({goal.GetDescription()}) -- {checklistGoal.GetCompletionStatus()}");
+                }
+                else
+                {
+                    Console.WriteLine($"{goalNumber}. {checkbox} {goal.GetGoalName()} ({goal.GetDescription()})");
+                }
+                goalNumber++;
+            }
+        }
+
+        Console.WriteLine("Press any key to return to the main menu...");
+        Console.ReadKey();
     }
-    else
+
+    static void RecordEvent(List<Goal> goals)
     {
+        Console.Clear();
+
+        Console.WriteLine("Here are your goals: ");
         int goalNumber = 1;
         foreach (var goal in goals)
         {
-            // Get goal representation
-            string status = goal.GetStringRepresentation();
-            string[] statusParts = status.Split(':');
-
-            if (statusParts.Length != 2)
+            string checkbox = goal.IsCompleted() ? "[X]" : "[ ]";
+            if (goal is CheckList checklistGoal)
             {
-                Console.WriteLine($"Invalid goal format: {status}. Skipping this goal.");
-                continue;
+                Console.WriteLine($"{goalNumber}. {checkbox} {goal.GetGoalName()} ({goal.GetDescription()}) -- {checklistGoal.GetCompletionStatus()}");
             }
-
-            // Extract goal details
-            string goalDetails = statusParts[1];
-            string[] goalDetailsParts = goalDetails.Split(',');
-
-            if (goalDetailsParts.Length < 3)
+            else
             {
-                Console.WriteLine($"Incomplete goal details: {goalDetails}. Skipping this goal.");
-                continue;
+                Console.WriteLine($"{goalNumber}. {checkbox} {goal.GetGoalName()} ({goal.GetDescription()})");
             }
-
-            // Display goal in the desired format: "1. Goal Name (Goal Description)"
-            Console.WriteLine($"{goalNumber}. {goal.GetGoalName()} ({goal.GetDescription()})");
             goalNumber++;
         }
+
+        // STRETCH added functionality where you can mark off multiple goals at once
+        Console.WriteLine("Enter the number of the goal you accomplished, separated by commas (e.g., 1, 3, 5): ");
+        string input = Console.ReadLine();
+        string[] goalNumbers = input.Split(',');
+
+        foreach (string goalNumberStr in goalNumbers)
+        {
+            if (int.TryParse(goalNumberStr.Trim(), out int goalIndex) && goalIndex > 0 && goalIndex <= goals.Count)
+            {
+                Goal goal = goals[goalIndex - 1];
+                if (!goal.IsCompleted())
+                {
+                    goal.MarkComplete();
+                    totalPoints += goal.GetUserPoints();
+                    Console.WriteLine($"You completed the goal: {goal.GetGoalName()} and earned {goal.GetUserPoints()} points.");
+                }
+                else
+                {
+                    Console.WriteLine($"Goal '{goal.GetGoalName()}' is already completed.");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Invalid goal number: {goalNumberStr.Trim()}.");
+            }
+        }
+
+        Console.WriteLine("Press any key to return to the main menu...");
+        Console.ReadKey();
     }
-
-    Console.WriteLine("Press any key to return to the main menu...");
-    Console.ReadKey();
-}
-
 }

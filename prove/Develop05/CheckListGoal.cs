@@ -1,45 +1,19 @@
 public class CheckList : Goal
 {
-    private int _timesCompleted;   // Tracks how many times the goal was completed
-    private int _targetCompletion; // How many completions required for the bonus
-    private int _bonusPoints;      // Bonus points for completing the goal a certain number of times
+    private int _timesCompleted;     // Tracks the number of times the goal has been completed
+    private int _targetCompletion;   // How many times the goal needs to be completed
+    private int _bonusPoints;        // Bonus points for completing the goal the target number of times
 
-    // Constructor for CheckList Goal
+    // Constructor to initialize the checklist goal
     public CheckList(string goalName, string goalDescription, int userPoints, int bonusPoints, int targetCompletion)
         : base(goalName, goalDescription, userPoints)
     {
         _bonusPoints = bonusPoints;
         _targetCompletion = targetCompletion;
-        _timesCompleted = 0;  // Initially, no completions
+        _timesCompleted = 0;  // Initialize the completed count to 0
     }
 
-    // Method to mark the goal as completed and check for bonus points
-    public void MarkComplete()
-    {
-        _timesCompleted++;
-        if (_timesCompleted >= _targetCompletion)
-        {
-            // If the user completes the goal enough times, they get the bonus points
-            Console.WriteLine($"Congratulations! You've earned a bonus of {_bonusPoints} points!");
-            SetUserPoints(GetUserPoints() + _bonusPoints);  // Add bonus points
-        }
-    }
-
-    // Method to display the current status of the goal, including completion count
-    public void DisplayStatus()
-    {
-        Console.WriteLine($"{GetGoalName()} - {GetDescription()}");
-        Console.WriteLine($"Points: {GetUserPoints()}");
-        Console.WriteLine($"Completed {GetTimesCompleted()} of {_targetCompletion} times.");
-    }
-
-    // Getter for times completed
-    public int GetTimesCompleted()
-    {
-        return _timesCompleted;
-    }
-
-    // Static method to create the CheckList goal
+    // Static method to create a new checklist goal
     public static CheckList CreateGoal(List<Goal> goals)
     {
         Console.Write("What is the name of your goal? ");
@@ -56,9 +30,30 @@ public class CheckList : Goal
         return new CheckList(goalName, goalDescription, userPoints, bonusPoints, targetCompletion);
     }
 
-    // String representation for saving/loading goals
+    // Mark the goal as completed (increment the completed counter)
+    public override void MarkComplete()
+    {
+        if (_timesCompleted < _targetCompletion)
+        {
+            _timesCompleted++; // Increment completion count
+        }
+    }
+
+    // Check if the goal is completed (i.e., target completion is met)
+    public override bool IsCompleted()
+    {
+        return _timesCompleted >= _targetCompletion;
+    }
+
+    // Get a string representation of the goal (for saving and loading purposes)
     public override string GetStringRepresentation()
     {
         return $"CheckList:{GetGoalName()},{GetDescription()},{GetUserPoints()},{_bonusPoints},{_targetCompletion},{_timesCompleted}";
+    }
+
+    // Method to get the current completion status (how many times the goal has been completed)
+    public string GetCompletionStatus()
+    {
+        return $"Currently Completed: {_timesCompleted}/{_targetCompletion}";
     }
 }
