@@ -1,22 +1,27 @@
+// Eternal Quest Program - Kole Cutler
+// Fully completed and exceeds requirements
+// This assignment was HARD. I used W3 schools, chatGPT, and classtime to help with
+// with this assignment
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 
 class Program
 {
-    static int totalPoints = 0;  // Starting with some points for testing purposes
+    // Creates a variable for total points
+    static int totalPoints = 0;  
 
     static void Main(string[] args)
     {
-        // A placeholder for where you'll store goals
-        var goals = new List<Goal>();
+        var goals = new List<Goal>(); // List where all of the users inputed goals will be stored
 
         while (true)
         {
             // Display total points above the menu
             Console.Clear();
             Console.WriteLine($"You have {totalPoints} points.");
-
+            // Main menu
             Console.WriteLine("Menu Options:");
             Console.WriteLine(" 1. Create New Goal");
             Console.WriteLine(" 2. List Goals");
@@ -25,7 +30,9 @@ class Program
             Console.WriteLine(" 5. Record Event");
             Console.WriteLine(" 6. Quit");
             Console.WriteLine("Select a choice from the menu: ");
-            string choice = Console.ReadLine();
+            string choice = Console.ReadLine(); // takes user input in the form of a string calls it "choice"
+
+            // Decided to use a switch statement since Bro. Godridge used one
             switch (choice)
             {
                 case "1":
@@ -51,6 +58,7 @@ class Program
                 case "6":
                     return;
 
+                // ChatGPT wrote this when debugging and I kept it. It ensures that user inputs the correct number
                 default:
                     Console.WriteLine("Invalid choice. Please select a valid option.");
                     break;
@@ -58,8 +66,10 @@ class Program
         }
     }
 
+    // Method to create all new goals and store them in the same list
     static void CreateNewGoal(List<Goal> goals)
     {
+        // Submenu
         Console.Clear();
         Console.WriteLine("The types of Goals are:");
         Console.WriteLine(" 1. Simple Goal");
@@ -67,7 +77,7 @@ class Program
         Console.WriteLine(" 3. Checklist Goal");
         Console.WriteLine("Which type of goal would you like to create?");
 
-        string goalType = Console.ReadLine();
+        string goalType = Console.ReadLine(); // Converts user input to useable variable
 
         switch (goalType)
         {
@@ -89,6 +99,7 @@ class Program
         Console.Clear();
     }
 
+    // Method to create simple goal and store it
     static void CreateSimpleGoal(List<Goal> goals)
     {
         SimpleGoal newGoal = SimpleGoal.CreateGoal(goals);
@@ -97,6 +108,7 @@ class Program
         Console.WriteLine("Simple Goal created. Press Enter to Return to the Main Menu.");
     }
 
+    // Method to create eternal goal and store it
     static void CreateEternalGoal(List<Goal> goals)
     {
         EternalGoal newGoal = EternalGoal.CreateGoal(goals);
@@ -105,6 +117,7 @@ class Program
         Console.WriteLine("Eternal Goal created. Press Enter to Return to the Main Menu.");
     }
 
+    // Method to create CheckListGoal and store it
     static void CreateCheckListGoal(List<Goal> goals)
     {
         CheckList newGoal = CheckList.CreateGoal(goals);
@@ -113,6 +126,7 @@ class Program
         Console.WriteLine("Checklist Goal created. Press Enter to Return to the Main Menu.");
     }
 
+    // Method for save goals 
     static void SaveGoals(List<Goal> goals)
     {
         Console.Write("Enter the filename to save your goals (e.g., goals.txt): ");
@@ -129,6 +143,7 @@ class Program
         Console.WriteLine($"Goals have been saved to {filename}.");
     }
 
+    // Method for loading goals
     static List<Goal> LoadGoals()
     {
         List<Goal> goals = new List<Goal>();

@@ -13,7 +13,7 @@ public class CheckList : Goal
         _timesCompleted = 0;  // Initialize the completed count to 0
     }
 
-    // Static method to create a new checklist goal
+   // Submenu for CheckList Goal
     public static CheckList CreateGoal(List<Goal> goals)
     {
         Console.Write("What is the name of your goal? ");
@@ -30,7 +30,8 @@ public class CheckList : Goal
         return new CheckList(goalName, goalDescription, userPoints, bonusPoints, targetCompletion);
     }
 
-    // Mark the goal as completed (increment the completed counter)
+    // Used ChatGPT to help with this one
+    // Basically it says once the times completed is at the target completion, it will mark complete
     public override void MarkComplete()
     {
         if (_timesCompleted < _targetCompletion)

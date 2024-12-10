@@ -1,3 +1,5 @@
+// Base Class
+
 public abstract class Goal
 {
     string _goalName;
@@ -20,12 +22,8 @@ public abstract class Goal
         _userPoints = userPoints;
     }
 
-    // Abstract method for MarkComplete() that must be implemented by subclasses
+    
     public abstract void MarkComplete();
-
-    // Abstract method for checking if a goal is completed
     public abstract bool IsCompleted();
-
-    // Abstract method for getting the string representation of the goal (for saving purposes)
     public abstract string GetStringRepresentation();
 }

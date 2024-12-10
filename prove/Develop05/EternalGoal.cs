@@ -5,17 +5,17 @@ public class EternalGoal : Goal
     public EternalGoal(string goalName, string goalDescription, int userPoints)
         : base(goalName, goalDescription, userPoints)
     {
-        _isComplete = false; // Initially, this goal is not completed.
+        _isComplete = false;
     }
 
     public override bool IsCompleted()
     {
-        return true;  // Eternal goals are always considered completed.
+        return true; // Makes it so every goal is automatically complete
     }
 
     public override void MarkComplete()
     {
-        // No need to implement as it's always complete
+        
     }
 
     public static EternalGoal CreateGoal(List<Goal> goals)
@@ -30,6 +30,7 @@ public class EternalGoal : Goal
         return new EternalGoal(goalName, goalDescription, userPoints);
     }
 
+    // Sourced from assignment page
     public override string GetStringRepresentation()
     {
         return $"EternalGoal:{GetGoalName()},{GetDescription()},{GetUserPoints()}";
