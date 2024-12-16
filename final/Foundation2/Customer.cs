@@ -19,8 +19,8 @@ public class Customer
         return _address;
     }
 
-    // public bool LivesInUSA()
-   // {
-        //return Address.IsInUSA();
-    //}
+    public bool LivesInUSA()
+    {
+        return _address.IsInUSA();
+    }
 }
